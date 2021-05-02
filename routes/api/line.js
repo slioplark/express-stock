@@ -1,8 +1,9 @@
-var express = require('express');
-var router = express.Router();
+require('dotenv').config()
+const router = require('express').Router()
+const lineController = require('../../controllers/line.controller')
 
-router.get('/', function (req, res, next) {
-  res.json({ title: 'Line' });
-});
+router.get('/', lineController.info)
+
+router.post('/webhook', lineController.middleware, lineController.echo)
 
 module.exports = router;
