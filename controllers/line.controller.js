@@ -40,4 +40,29 @@ const echo = (req, res) => {
     .catch((err) => res.status(500).end())
 }
 
-module.exports = { middleware, info, echo }
+const getImage = async (req, res) => {
+  Promise
+    .all(req.body.events.map((event) => {
+      if (
+        event.type !== 'message' ||
+        event.message.type !== 'text') {
+        return Promise.resolve(null)
+      }
+
+      return client.replyMessage(
+        event.replyToken, {
+        type: 'image',
+        previewImageUrl: 'https://picsum.photos/200',
+        originalContentUrl: 'https://picsum.photos/200'
+      });
+    }))
+    .then((result) => res.json(result))
+    .catch((err) => res.status(500).end())
+}
+
+module.exports = {
+  middleware,
+  info,
+  echo,
+  getImage
+}
