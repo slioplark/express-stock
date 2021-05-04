@@ -53,15 +53,12 @@ const echo = (req, res) => {
 const getImage = async (req, res, next) => {
   Promise.all(
     req.body.events.map(async (event) => {
-      const text = event.message.text
-
       if (event.type !== 'message' || event.message.type !== 'text') {
         return Promise.resolve(null)
       }
 
-      if (text[0] !== 'o' || text[1] !== '.') {
-        return Promise.resolve(null)
-      }
+      const url = getUrl(event.message.text)
+      if (!url) return Promise.resolve(null)
 
       const uuid = uuidv4()
       const fileName = `stock/${new Date().getTime()}.png`
@@ -87,13 +84,32 @@ const getImage = async (req, res, next) => {
         })
       })
 
-      const url = `https://invest.cnyes.com/twstock/TWS/${text.slice(2)}`
       const buffer = await puppeteerController.getScreenshot(url)
       bucketStream.end(buffer)
     })
   )
     .then((result) => res.json(result))
     .catch((err) => res.status(500).end())
+}
+
+const getUrl = (text) => {
+  const id = text.slice(2)
+  switch (text[0] + text[1]) {
+    case 'o.':
+      return `https://invest.cnyes.com/twstock/TWS/${id}`
+    case 'h.':
+      return `https://invest.cnyes.com/twstock/TWS/${id}/history`
+    case 'i.':
+      return `https://invest.cnyes.com/twstock/TWS/${id}/holders/institution`
+    case 'f.':
+      return `https://invest.cnyes.com/twstock/TWS/${id}/finirating`
+    case 'd.':
+      return `https://invest.cnyes.com/twstock/TWS/${id}/dividend`
+    case 'p.':
+      return `https://invest.cnyes.com/twstock/TWS/${id}/profile`
+    default:
+      return null
+  }
 }
 
 const getFileLink = (bucketName, filePath, token) =>
