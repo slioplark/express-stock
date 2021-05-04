@@ -95,6 +95,12 @@ const getImage = async (req, res, next) => {
 const getUrl = (text = '') => {
   const id = text.slice(2)
   switch (text[0].toLowerCase() + text[1]) {
+    case 'a.':
+      return `https://www.wantgoo.com/stock/institutional-investors/foreign/net-buy-sell-rank`
+    case 'b.':
+      return `https://www.wantgoo.com/stock/institutional-investors/investment-trust/net-buy-sell-rank`
+    case 'c.':
+      return `https://www.wantgoo.com/stock/institutional-investors/dealer/net-buy-sell-rank`
     case 'o.':
       return `https://invest.cnyes.com/twstock/TWS/${id}`
     case 'h.':
