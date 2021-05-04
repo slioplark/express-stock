@@ -96,15 +96,13 @@ const getUrl = (text = '') => {
   const id = text.slice(2)
   switch (text[0].toLowerCase() + text[1]) {
     case 'rf':
-      return `https://stock.wearn.com/a50.asp`
+      return `https://concords.moneydj.com/Z/ZG/ZGK_D.djhtm`
     case 'ri':
-      return `https://stock.wearn.com/b50.asp`
+      return `https://concords.moneydj.com/Z/ZG/ZGK_DD.djhtm`
     case 'rs':
-      return `https://stock.wearn.com/c50.asp`
+      return `https://concords.moneydj.com/Z/ZG/ZGK_DB.djhtm`
     case 'rm':
-      return `https://stock.wearn.com/d50.asp`
-    case 'r5':
-      return `https://stock.wearn.com/d50b.asp`
+      return `https://concords.moneydj.com/Z/ZG/ZGK_F.djhtm`
     case 'o.':
       return `https://invest.cnyes.com/twstock/TWS/${id}`
     case 'h.':
