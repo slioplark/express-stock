@@ -92,9 +92,9 @@ const getImage = async (req, res, next) => {
     .catch((err) => res.status(500).end())
 }
 
-const getUrl = (text) => {
+const getUrl = (text = '') => {
   const id = text.slice(2)
-  switch (text[0] + text[1]) {
+  switch (text[0].toLowerCase() + text[1]) {
     case 'o.':
       return `https://invest.cnyes.com/twstock/TWS/${id}`
     case 'h.':
