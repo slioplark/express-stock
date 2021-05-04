@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer')
 
-const getScreenshot = async (url = 'https://example.com') => {
+const getScreenshot = async (url = 'https://example.com', w = 800, h = 1024) => {
   const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
 
   const page = await browser.newPage()
@@ -11,8 +11,8 @@ const getScreenshot = async (url = 'https://example.com') => {
     clip: {
       x: 0,
       y: 0,
-      width: 800,
-      height: 1024,
+      width: w,
+      height: h,
     },
   })
 

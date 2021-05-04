@@ -57,7 +57,7 @@ const getImage = async (req, res, next) => {
         return Promise.resolve(null)
       }
 
-      const url = getUrl(event.message.text)
+      const { url, w, h } = getUrl(event.message.text)
       if (!url) return Promise.resolve(null)
 
       const uuid = uuidv4()
@@ -84,7 +84,7 @@ const getImage = async (req, res, next) => {
         })
       })
 
-      const buffer = await puppeteerController.getScreenshot(url)
+      const buffer = await puppeteerController.getScreenshot(url, w, h)
       bucketStream.end(buffer)
     })
   )
@@ -96,27 +96,27 @@ const getUrl = (text = '') => {
   const id = text.slice(2)
   switch (text[0].toLowerCase() + text[1]) {
     case 'rf':
-      return `https://concords.moneydj.com/Z/ZG/ZGK_D.djhtm`
+      return { url: `https://concords.moneydj.com/Z/ZG/ZGK_D.djhtm`, w: 850 }
     case 'ri':
-      return `https://concords.moneydj.com/Z/ZG/ZGK_DD.djhtm`
+      return { url: `https://concords.moneydj.com/Z/ZG/ZGK_DD.djhtm`, w: 850 }
     case 'rs':
-      return `https://concords.moneydj.com/Z/ZG/ZGK_DB.djhtm`
+      return { url: `https://concords.moneydj.com/Z/ZG/ZGK_DB.djhtm`, w: 850 }
     case 'rm':
-      return `https://concords.moneydj.com/Z/ZG/ZGK_F.djhtm`
+      return { url: `https://concords.moneydj.com/Z/ZG/ZGK_F.djhtm`, w: 850 }
     case 'o.':
-      return `https://invest.cnyes.com/twstock/TWS/${id}`
+      return { url: `https://invest.cnyes.com/twstock/TWS/${id}` }
     case 'h.':
-      return `https://invest.cnyes.com/twstock/TWS/${id}/history`
+      return { url: `https://invest.cnyes.com/twstock/TWS/${id}/history` }
     case 'i.':
-      return `https://invest.cnyes.com/twstock/TWS/${id}/holders/institution`
+      return { url: `https://invest.cnyes.com/twstock/TWS/${id}/holders/institution` }
     case 'f.':
-      return `https://invest.cnyes.com/twstock/TWS/${id}/finirating`
+      return { url: `https://invest.cnyes.com/twstock/TWS/${id}/finirating` }
     case 'd.':
-      return `https://invest.cnyes.com/twstock/TWS/${id}/dividend`
+      return { url: `https://invest.cnyes.com/twstock/TWS/${id}/dividend` }
     case 'p.':
-      return `https://invest.cnyes.com/twstock/TWS/${id}/profile`
+      return { url: `https://invest.cnyes.com/twstock/TWS/${id}/profile` }
     default:
-      return null
+      return { url: null }
   }
 }
 
