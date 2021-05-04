@@ -57,7 +57,7 @@ const getImage = async (req, res, next) => {
         return Promise.resolve(null)
       }
 
-      const { url, w, h } = getUrl(event.message.text)
+      const { url, w, h } = getUrl(event.message.text.toLowerCase())
       if (!url) return Promise.resolve(null)
 
       const uuid = uuidv4()
@@ -94,7 +94,7 @@ const getImage = async (req, res, next) => {
 
 const getUrl = (text = '') => {
   const id = text.slice(2)
-  switch (text[0].toLowerCase() + text[1]) {
+  switch (text[0] + text[1]) {
     case 'rf':
       return { url: `https://concords.moneydj.com/Z/ZG/ZGK_D.djhtm`, w: 850 }
     case 'ri':
