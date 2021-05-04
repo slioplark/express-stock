@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
+var express = require('express')
+var router = express.Router()
 
 router.use('/line', require('./line'))
 
-module.exports = router;
+module.exports = router

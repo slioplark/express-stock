@@ -6,4 +6,4 @@ router.get('/', lineController.info)
 
 router.post('/webhook', lineController.middleware, lineController.getImage)
 
-module.exports = router;
+module.exports = router
