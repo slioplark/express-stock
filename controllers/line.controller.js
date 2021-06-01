@@ -94,12 +94,12 @@ const getUrl = (text = '') => {
 
   const key = list[0]
   const num = list[1]
-  const day = dayjs().add(7, 'day').format('yyyy-MM-dd')
+  const day = dayjs().add(-7, 'day').format('YYYY-MM-DD')
   switch (key) {
     case 'fmc':
-      return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000060&B=${day}&C=0` }
+      return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000060&B=${day}&C=2` }
     case 'exd':
-      return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000020&B=${day}&C=0` }
+      return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000020&B=${day}&C=2` }
     case 'rf':
       return { url: `https://concords.moneydj.com/Z/ZG/ZGK_D.djhtm`, w: 850 }
     case 'ri':
