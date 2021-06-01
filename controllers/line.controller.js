@@ -1,6 +1,7 @@
 require('dotenv').config()
 const { v4: uuidv4 } = require('uuid')
 const line = require('@line/bot-sdk')
+const dayjs = require('dayjs')
 const admin = require('firebase-admin')
 const serviceAccount = require('../serviceAccountKey.json')
 const puppeteerController = require('./puppeteer.controller')
@@ -93,9 +94,12 @@ const getUrl = (text = '') => {
 
   const key = list[0]
   const num = list[1]
+  const day = dayjs().add(7, 'day').format('yyyy-MM-dd')
   switch (key) {
     case 'fmc':
-      return { url: 'https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000060&B=&C=0' }
+      return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000060&B=${day}&C=0` }
+    case 'exd':
+      return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000020&B=${day}&C=0` }
     case 'rf':
       return { url: `https://concords.moneydj.com/Z/ZG/ZGK_D.djhtm`, w: 850 }
     case 'ri':
