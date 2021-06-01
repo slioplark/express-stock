@@ -100,6 +100,8 @@ const getUrl = (text = '') => {
       return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000060&B=${day}&C=2` }
     case 'exd':
       return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000020&B=${day}&C=2` }
+    case 'wo':
+      return { url: `https://www.wantgoo.com/option/supportresistance`, w: 1200, h: 2200 }
     case 'rf':
       return { url: `https://concords.moneydj.com/Z/ZG/ZGK_D.djhtm`, w: 850 }
     case 'ri':
