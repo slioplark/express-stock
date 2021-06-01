@@ -5,12 +5,7 @@ const admin = require('firebase-admin')
 const serviceAccount = require('../serviceAccountKey.json')
 const puppeteerController = require('./puppeteer.controller')
 
-const {
-  DATABASE_URL,
-  STORAGE_BUCKET,
-  LINE_CHANNEL_SECRET,
-  LINE_CHANNEL_ACCESS_TOKEN,
-} = process.env
+const { DATABASE_URL, STORAGE_BUCKET, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN } = process.env
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -93,8 +88,14 @@ const getImage = async (req, res, next) => {
 }
 
 const getUrl = (text = '') => {
-  const id = text.slice(2)
-  switch (text[0] + text[1]) {
+  const list = text.split('.')
+  if (list.length !== 2) return { url: null }
+
+  const key = list[0]
+  const num = list[1]
+  switch (key) {
+    case 'fmc':
+      return { url: 'https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000060&B=&C=0' }
     case 'rf':
       return { url: `https://concords.moneydj.com/Z/ZG/ZGK_D.djhtm`, w: 850 }
     case 'ri':
@@ -103,18 +104,18 @@ const getUrl = (text = '') => {
       return { url: `https://concords.moneydj.com/Z/ZG/ZGK_DB.djhtm`, w: 850 }
     case 'rm':
       return { url: `https://concords.moneydj.com/Z/ZG/ZGK_F.djhtm`, w: 850 }
-    case 'o.':
-      return { url: `https://invest.cnyes.com/twstock/TWS/${id}` }
-    case 'h.':
-      return { url: `https://invest.cnyes.com/twstock/TWS/${id}/history` }
-    case 'i.':
-      return { url: `https://invest.cnyes.com/twstock/TWS/${id}/holders/institution` }
-    case 'f.':
-      return { url: `https://invest.cnyes.com/twstock/TWS/${id}/finirating` }
-    case 'd.':
-      return { url: `https://invest.cnyes.com/twstock/TWS/${id}/dividend` }
-    case 'p.':
-      return { url: `https://invest.cnyes.com/twstock/TWS/${id}/profile` }
+    case 'o':
+      return { url: `https://invest.cnyes.com/twstock/TWS/${num}` }
+    case 'h':
+      return { url: `https://invest.cnyes.com/twstock/TWS/${num}/history` }
+    case 'i':
+      return { url: `https://invest.cnyes.com/twstock/TWS/${num}/holders/institution` }
+    case 'f':
+      return { url: `https://invest.cnyes.com/twstock/TWS/${num}/finirating` }
+    case 'd':
+      return { url: `https://invest.cnyes.com/twstock/TWS/${num}/dividend` }
+    case 'p':
+      return { url: `https://invest.cnyes.com/twstock/TWS/${num}/profile` }
     default:
       return { url: null }
   }
