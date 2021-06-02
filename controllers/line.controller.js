@@ -110,7 +110,7 @@ const getUrl = (text = '') => {
       return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000020&B=${day}&C=2` }
     case 'wo':
     case `${LINE_NOTIFY_NAME} wo`:
-      return { url: `https://histock.tw/stock/option.aspx?m=week`, w: 1200, h: 1400 }
+      return { url: `https://histock.tw/stock/option.aspx?m=week`, w: 1100, h: 1400 }
     case 'rf':
     case `${LINE_NOTIFY_NAME} rf`:
       return { url: `https://concords.moneydj.com/Z/ZG/ZGK_D.djhtm`, w: 850 }
