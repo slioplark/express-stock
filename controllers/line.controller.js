@@ -6,7 +6,13 @@ const admin = require('firebase-admin')
 const serviceAccount = require('../serviceAccountKey.json')
 const puppeteerController = require('./puppeteer.controller')
 
-const { DATABASE_URL, STORAGE_BUCKET, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN } = process.env
+const {
+  DATABASE_URL,
+  STORAGE_BUCKET,
+  LINE_NOTIFY_NAME,
+  LINE_CHANNEL_SECRET,
+  LINE_CHANNEL_ACCESS_TOKEN,
+} = process.env
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -97,30 +103,43 @@ const getUrl = (text = '') => {
   const day = dayjs().add(-7, 'day').format('YYYY-MM-DD')
   switch (key) {
     case 'fmc':
+    case `${LINE_NOTIFY_NAME} fmc`:
       return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000060&B=${day}&C=2` }
     case 'exd':
+    case `${LINE_NOTIFY_NAME} exd`:
       return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000020&B=${day}&C=2` }
     case 'wo':
+    case `${LINE_NOTIFY_NAME} wo`:
       return { url: `https://histock.tw/stock/option.aspx?m=week`, w: 1200, h: 1400 }
     case 'rf':
+    case `${LINE_NOTIFY_NAME} rf`:
       return { url: `https://concords.moneydj.com/Z/ZG/ZGK_D.djhtm`, w: 850 }
     case 'ri':
+    case `${LINE_NOTIFY_NAME} ri`:
       return { url: `https://concords.moneydj.com/Z/ZG/ZGK_DD.djhtm`, w: 850 }
     case 'rs':
+    case `${LINE_NOTIFY_NAME} rs`:
       return { url: `https://concords.moneydj.com/Z/ZG/ZGK_DB.djhtm`, w: 850 }
     case 'rm':
+    case `${LINE_NOTIFY_NAME} rm`:
       return { url: `https://concords.moneydj.com/Z/ZG/ZGK_F.djhtm`, w: 850 }
     case 'o':
+    case `${LINE_NOTIFY_NAME} o`:
       return { url: `https://invest.cnyes.com/twstock/TWS/${num}` }
     case 'h':
+    case `${LINE_NOTIFY_NAME} h`:
       return { url: `https://invest.cnyes.com/twstock/TWS/${num}/history` }
     case 'i':
+    case `${LINE_NOTIFY_NAME} i`:
       return { url: `https://invest.cnyes.com/twstock/TWS/${num}/holders/institution` }
     case 'f':
+    case `${LINE_NOTIFY_NAME} f`:
       return { url: `https://invest.cnyes.com/twstock/TWS/${num}/finirating` }
     case 'd':
+    case `${LINE_NOTIFY_NAME} d`:
       return { url: `https://invest.cnyes.com/twstock/TWS/${num}/dividend` }
     case 'p':
+    case `${LINE_NOTIFY_NAME} p`:
       return { url: `https://invest.cnyes.com/twstock/TWS/${num}/profile` }
     default:
       return { url: null }
