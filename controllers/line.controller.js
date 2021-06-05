@@ -102,6 +102,16 @@ const pushMessage = async (req, res) => {
 const replyMessage = async (req, res, next) => {
   Promise.all(
     req.body.events.map(async (event) => {
+      if (event.type === 'follow') {
+        await lineRef.createUserId(event.source.userId)
+        return Promise.resolve(null)
+      }
+
+      if (event.type === 'unfollow') {
+        await lineRef.deleteUserId(event.source.userId)
+        return Promise.resolve(null)
+      }
+
       if (event.type !== 'message' || event.message.type !== 'text') {
         return Promise.resolve(null)
       }
