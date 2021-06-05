@@ -4,9 +4,10 @@ const line = require('@line/bot-sdk')
 const dayjs = require('dayjs')
 const axois = require('axios')
 const admin = require('../services/db')
+const { lineRef } = require('../services/db/collections')
 const puppeteerController = require('./puppeteer.controller')
 
-const { STORAGE_BUCKET, LINE_USER_ID, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN } = process.env
+const { STORAGE_BUCKET, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN } = process.env
 
 const bucket = admin.storage().bucket()
 const config = {
@@ -41,7 +42,64 @@ const echo = (req, res) => {
     .catch((err) => res.status(500).end())
 }
 
-const getImage = async (req, res, next) => {
+const pushMessage = async (req, res) => {
+  const { message } = req.body
+  const { url, w, h } = getUrl(message)
+  if (!url) return Promise.resolve(null)
+
+  const userIds = await lineRef.getUserIds()
+  if (userIds.length) return Promise.resolve(null)
+
+  const uuid = uuidv4()
+  const fileName = `stock/${new Date().getTime()}.png`
+  const bucketFile = bucket.file(fileName)
+  const bucketStream = bucketFile.createWriteStream({
+    metadata: {
+      metadata: {
+        firebaseStorageDownloadTokens: uuid,
+      },
+    },
+  })
+
+  bucketStream.on('error', (err) => {
+    next(err)
+  })
+
+  bucketStream.on('finish', () => {
+    const fileLink = getFileLink(STORAGE_BUCKET, fileName, uuid)
+    axois
+      .post(
+        'https://api.line.me/v2/bot/message/multicast',
+        {
+          to: userIds,
+          messages: [
+            {
+              type: 'image',
+              previewImageUrl: fileLink,
+              originalContentUrl: fileLink,
+            },
+          ],
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer {${LINE_CHANNEL_ACCESS_TOKEN}}`,
+          },
+        }
+      )
+      .then(() => {
+        res.json(null)
+      })
+      .catch(() => {
+        res.status(500).end()
+      })
+  })
+
+  const buffer = await puppeteerController.getScreenshot(url, w, h)
+  bucketStream.end(buffer)
+}
+
+const replyMessage = async (req, res, next) => {
   Promise.all(
     req.body.events.map(async (event) => {
       if (event.type !== 'message' || event.message.type !== 'text') {
@@ -81,60 +139,6 @@ const getImage = async (req, res, next) => {
   )
     .then((result) => res.json(result))
     .catch((err) => res.status(500).end())
-}
-
-const pushMessage = async (req, res) => {
-  const { message } = req.body
-  const { url, w, h } = getUrl(message)
-  if (!url) return Promise.resolve(null)
-
-  const uuid = uuidv4()
-  const fileName = `stock/${new Date().getTime()}.png`
-  const bucketFile = bucket.file(fileName)
-  const bucketStream = bucketFile.createWriteStream({
-    metadata: {
-      metadata: {
-        firebaseStorageDownloadTokens: uuid,
-      },
-    },
-  })
-
-  bucketStream.on('error', (err) => {
-    next(err)
-  })
-
-  bucketStream.on('finish', () => {
-    const fileLink = getFileLink(STORAGE_BUCKET, fileName, uuid)
-    axois
-      .post(
-        'https://api.line.me/v2/bot/message/multicast',
-        {
-          to: [LINE_USER_ID],
-          messages: [
-            {
-              type: 'image',
-              previewImageUrl: fileLink,
-              originalContentUrl: fileLink,
-            },
-          ],
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer {${LINE_CHANNEL_ACCESS_TOKEN}}`,
-          },
-        }
-      )
-      .then(() => {
-        res.json(null)
-      })
-      .catch(() => {
-        res.status(500).end()
-      })
-  })
-
-  const buffer = await puppeteerController.getScreenshot(url, w, h)
-  bucketStream.end(buffer)
 }
 
 const getUrl = (text = '') => {
@@ -185,6 +189,6 @@ module.exports = {
   middleware,
   info,
   echo,
-  getImage,
   pushMessage,
+  replyMessage,
 }

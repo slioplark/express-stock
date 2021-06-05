@@ -5,8 +5,8 @@ const lineController = require('../../controllers/line.controller')
 
 router.get('/', lineController.info)
 
-router.post('/webhook', lineController.middleware, lineController.getImage)
-
 router.post('/message', express.json(), lineController.pushMessage)
+
+router.post('/webhook', lineController.middleware, lineController.replyMessage)
 
 module.exports = router
