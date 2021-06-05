@@ -174,6 +174,8 @@ const getUrl = (text = '') => {
       return { url: `https://concords.moneydj.com/Z/ZG/ZGK_F.djhtm`, w: 850 }
     case 'usd':
       return { url: 'https://invest.cnyes.com/forex/detail/USDTWD/history' }
+    case 'ki':
+      return { url: 'https://invest.cnyes.com/index/GI/KOSPI', h: 1400 }
     case 'o':
       return { url: `https://invest.cnyes.com/twstock/TWS/${num}` }
     case 'h':
