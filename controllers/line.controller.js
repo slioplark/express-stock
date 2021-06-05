@@ -43,32 +43,32 @@ const echo = (req, res) => {
 }
 
 const pushMessage = async (req, res) => {
-  const { message } = req.body
-  const { url, w, h } = getUrl(message)
-  if (!url) return Promise.resolve(null)
+  try {
+    const { message } = req.body
+    const { url, w, h } = getUrl(message)
+    if (!url) throw new Error()
 
-  const userIds = await lineRef.getUserIds()
-  if (userIds.length) return Promise.resolve(null)
+    const userIds = await lineRef.getUserIds()
+    if (!userIds.length) throw new Error()
 
-  const uuid = uuidv4()
-  const fileName = `stock/${new Date().getTime()}.png`
-  const bucketFile = bucket.file(fileName)
-  const bucketStream = bucketFile.createWriteStream({
-    metadata: {
+    const uuid = uuidv4()
+    const fileName = `stock/${new Date().getTime()}.png`
+    const bucketFile = bucket.file(fileName)
+    const bucketStream = bucketFile.createWriteStream({
       metadata: {
-        firebaseStorageDownloadTokens: uuid,
+        metadata: {
+          firebaseStorageDownloadTokens: uuid,
+        },
       },
-    },
-  })
+    })
 
-  bucketStream.on('error', (err) => {
-    next(err)
-  })
+    bucketStream.on('error', (err) => {
+      next(err)
+    })
 
-  bucketStream.on('finish', () => {
-    const fileLink = getFileLink(STORAGE_BUCKET, fileName, uuid)
-    axois
-      .post(
+    bucketStream.on('finish', () => {
+      const fileLink = getFileLink(STORAGE_BUCKET, fileName, uuid)
+      axois.post(
         'https://api.line.me/v2/bot/message/multicast',
         {
           to: userIds,
@@ -87,16 +87,15 @@ const pushMessage = async (req, res) => {
           },
         }
       )
-      .then(() => {
-        res.json(null)
-      })
-      .catch(() => {
-        res.status(500).end()
-      })
-  })
+    })
 
-  const buffer = await puppeteerController.getScreenshot(url, w, h)
-  bucketStream.end(buffer)
+    const buffer = await puppeteerController.getScreenshot(url, w, h)
+    bucketStream.end(buffer)
+
+    res.json(null)
+  } catch (err) {
+    res.json(null)
+  }
 }
 
 const replyMessage = async (req, res, next) => {
