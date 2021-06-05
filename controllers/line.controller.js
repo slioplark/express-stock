@@ -3,22 +3,10 @@ const { v4: uuidv4 } = require('uuid')
 const line = require('@line/bot-sdk')
 const dayjs = require('dayjs')
 const axois = require('axios')
-const admin = require('firebase-admin')
-const serviceAccount = require('../serviceAccountKey.json')
+const admin = require('../services/db')
 const puppeteerController = require('./puppeteer.controller')
 
-const {
-  DATABASE_URL,
-  STORAGE_BUCKET,
-  LINE_USER_ID,
-  LINE_CHANNEL_SECRET,
-  LINE_CHANNEL_ACCESS_TOKEN,
-} = process.env
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: DATABASE_URL,
-})
+const { STORAGE_BUCKET, LINE_USER_ID, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN } = process.env
 
 const bucket = admin.storage().bucket()
 const config = {
