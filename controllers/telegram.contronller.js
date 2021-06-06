@@ -18,7 +18,7 @@ const echo = (req, res) => {
     })
     res.json(null)
   } catch (err) {
-    res.status(500).end()
+    res.json(null)
   }
 }
 
@@ -58,7 +58,7 @@ const replyMessage = async (req, res) => {
 
     res.json(null)
   } catch (err) {
-    res.status(500).end()
+    res.json(null)
   }
 }
 
