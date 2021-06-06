@@ -16,7 +16,7 @@ const echo = (req, res) => {
       chat_id: chatId,
       text: message,
     })
-    res.json(null)
+    res.json(chatId, message)
   } catch (err) {
     res.json(null)
   }
@@ -56,7 +56,7 @@ const replyMessage = async (req, res) => {
     const buffer = await puppeteerController.getScreenshot(url, w, h)
     bucketStream.end(buffer)
 
-    res.json(null)
+    res.json(chatId, message)
   } catch (err) {
     res.json(null)
   }
@@ -68,5 +68,6 @@ const getFileLink = (bucketName, filePath, token) =>
   )}?alt=media&token=${token}`
 
 module.exports = {
+  echo,
   replyMessage,
 }
