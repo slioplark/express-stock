@@ -5,7 +5,7 @@ const dayjs = require('dayjs')
 const axois = require('axios')
 const admin = require('../services/db')
 const { lineRef } = require('../services/db/collections')
-const { puppeteerController } = require('.')
+const puppeteerController = require('./puppeteer.controller')
 
 const { STORAGE_BUCKET, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN } = process.env
 
