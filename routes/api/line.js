@@ -1,7 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const router = require('express').Router()
-const lineController = require('../../controllers/line.controller')
+const { lineController } = require('../../controllers')
 
 router.get('/', lineController.info)
 
