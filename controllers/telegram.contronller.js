@@ -16,9 +16,10 @@ const echo = (req, res) => {
       chat_id: chatId,
       text: message,
     })
-    res.json(chatId, message)
+
+    res.status(200).json(null)
   } catch (err) {
-    res.json(null)
+    res.status(200).json(err)
   }
 }
 
@@ -56,9 +57,9 @@ const replyMessage = async (req, res) => {
     const buffer = await puppeteerController.getScreenshot(url, w, h)
     bucketStream.end(buffer)
 
-    res.json(chatId, message)
+    res.status(200).json(null)
   } catch (err) {
-    res.json(null)
+    res.status(200).json(err)
   }
 }
 
