@@ -34,16 +34,18 @@ const getConfig = (text = '') => {
       return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000060&B=${day}&C=2` }
     case 'exd':
       return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000020&B=${day}&C=2` }
-    case 'wo':
+    case 'fbs':
+      return { url: `https://moneydj.emega.com.tw/z/zg/zgk.djhtm?A=D&B=0&C=${num}` }
+    case 'mbs':
+      return { url: `https://moneydj.emega.com.tw/z/zg/zgk.djhtm?A=F&B=0&C=${num}` }
+    case 'ibs':
+      return { url: `https://moneydj.emega.com.tw/z/zg/zgk.djhtm?A=DD&B=0&C=${num}` }
+    case 'sbs':
+      return { url: `https://moneydj.emega.com.tw/z/zg/zgk.djhtm?A=DB&B=0&C=${num}` }
+    case 'lp':
+      return { url: `https://moneydj.emega.com.tw/z/zc/zcl/zcl.djhtm?a=${num}&b=2` }
+    case 'txo':
       return { url: `https://histock.tw/stock/option.aspx?m=week`, w: 1100, h: 1400 }
-    case 'rf':
-      return { url: `https://concords.moneydj.com/Z/ZG/ZGK_D.djhtm`, w: 850 }
-    case 'ri':
-      return { url: `https://concords.moneydj.com/Z/ZG/ZGK_DD.djhtm`, w: 850 }
-    case 'rs':
-      return { url: `https://concords.moneydj.com/Z/ZG/ZGK_DB.djhtm`, w: 850 }
-    case 'rm':
-      return { url: `https://concords.moneydj.com/Z/ZG/ZGK_F.djhtm`, w: 850 }
     case 'usd':
       return { url: 'https://invest.cnyes.com/forex/detail/USDTWD/history' }
     case 'ki':
@@ -52,8 +54,6 @@ const getConfig = (text = '') => {
       return { url: `https://invest.cnyes.com/twstock/TWS/${num}` }
     case 'h':
       return { url: `https://invest.cnyes.com/twstock/TWS/${num}/history` }
-    case 'i':
-      return { url: `https://invest.cnyes.com/twstock/TWS/${num}/holders/institution` }
     case 'f':
       return { url: `https://invest.cnyes.com/twstock/TWS/${num}/finirating` }
     case 'd':
