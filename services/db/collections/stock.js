@@ -5,12 +5,12 @@ const firestore = admin.firestore()
 const collectionRef = firestore.collection('stocks')
 
 const updateStock = async (data) => {
-  const snapshot = await collectionRef.doc(data.date).get()
+  const snapshot = await collectionRef.doc(data.id).get()
 
   if (!snapshot.exists) {
-    await collectionRef.doc(data.date).set(data)
+    await collectionRef.doc(data.id).set(data)
   } else {
-    await collectionRef.doc(data.date).update(data)
+    await collectionRef.doc(data.id).update(data)
   }
 }
 

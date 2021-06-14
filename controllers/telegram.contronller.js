@@ -90,4 +90,6 @@ const getFileLink = (bucketName, filePath, token) =>
 module.exports = {
   echo,
   webhook,
+  replyImage,
+  replyMessage,
 }
