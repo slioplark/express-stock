@@ -8,27 +8,25 @@ const { TELEGRAM_DOMAIN, TELEGRAM_BOT_TOKEN, STORAGE_BUCKET } = process.env
 
 const bucket = admin.storage().bucket()
 
-const echo = (req, res) => {
+const echo = async (req, res) => {
   try {
+    const text = req.body.message.text
     const chatId = req.body.message.chat.id
-    const message = req.body.message.text
-    axios.post(`${TELEGRAM_DOMAIN}/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-      chat_id: chatId,
-      text: message,
-    })
 
-    res.status(200).json(null)
+    await replyMessage(chatId, text)
+
+    res.json(true)
   } catch (err) {
-    res.status(200).json(err)
+    res.json(err.message)
   }
 }
 
-const replyMessage = async (req, res) => {
+const replyImage = async (req, res) => {
   try {
+    const text = req.body.message.text
     const chatId = req.body.message.chat.id
-    const message = req.body.message.text
 
-    const { url, w, h } = puppeteerController.getConfig(message.toLowerCase())
+    const { url, w, h } = puppeteerController.getConfig(text.toLowerCase())
     if (!url) throw new Error()
 
     const uuid = uuidv4()
@@ -57,9 +55,20 @@ const replyMessage = async (req, res) => {
     const buffer = await puppeteerController.getScreenshot(url, w, h)
     bucketStream.end(buffer)
 
-    res.status(200).json(null)
+    res.json(true)
   } catch (err) {
-    res.status(200).json(err)
+    res.json(err.message)
+  }
+}
+
+const replyMessage = async (chatId, text) => {
+  try {
+    await axios.post(`${TELEGRAM_DOMAIN}/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+      chat_id: chatId,
+      text: text,
+    })
+  } catch (err) {
+    throw new Error(err)
   }
 }
 
@@ -70,5 +79,6 @@ const getFileLink = (bucketName, filePath, token) =>
 
 module.exports = {
   echo,
+  replyImage,
   replyMessage,
 }

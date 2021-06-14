@@ -4,7 +4,6 @@ const router = require('express').Router()
 const { telegramController } = require('../../controllers')
 
 router.post('/', express.json(), telegramController.echo)
-
-router.post('/webhook', express.json(), telegramController.replyMessage)
+router.post('/webhook', express.json(), telegramController.replyImage)
 
 module.exports = router
