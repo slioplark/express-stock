@@ -4,9 +4,10 @@ const axios = require('axios')
 const admin = require('../services/db')
 const puppeteerController = require('./puppeteer.controller.js')
 
-const { TELEGRAM_DOMAIN, TELEGRAM_BOT_TOKEN, STORAGE_BUCKET } = process.env
+const { TELEGRAM_BOT_TOKEN, STORAGE_BUCKET } = process.env
 
 const bucket = admin.storage().bucket()
+const domain = 'https://api.telegram.org'
 
 const echo = async (req, res) => {
   try {
@@ -56,7 +57,7 @@ const replyImage = async (chatId, text) => {
 
     bucketStream.on('finish', async () => {
       const fileLink = getFileLink(STORAGE_BUCKET, fileName, uuid)
-      axios.post(`${TELEGRAM_DOMAIN}/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+      axios.post(`${domain}/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
         chat_id: chatId,
         photo: fileLink,
       })
@@ -73,7 +74,7 @@ const replyImage = async (chatId, text) => {
 
 const replyMessage = async (chatId, text) => {
   try {
-    await axios.post(`${TELEGRAM_DOMAIN}/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+    await axios.post(`${domain}/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
       chat_id: chatId,
       text: text,
     })

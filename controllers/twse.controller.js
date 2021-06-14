@@ -1,9 +1,10 @@
 const axios = require('axios')
 const dayjs = require('dayjs')
-const { stockRef } = require('../services/db/collections')
+const { inxRef } = require('../services/db/collections')
 const telegramController = require('./telegram.contronller')
 
 const date = dayjs().format('YYYYMMDD')
+const domain = 'https://www.twse.com.tw'
 
 const echo = (req, res) => {
   res.json({ echo: 'twse' })
@@ -13,7 +14,7 @@ const getLegalPersonByIndex = async (req, res) => {
   try {
     const chatId = req.body.message.chat.id
 
-    const { data: result } = await axios.get('https://www.twse.com.tw/fund/BFI82U', {
+    const { data: result } = await axios.get(`${domain}/fund/BFI82U`, {
       params: {
         dayDate: date,
         response: 'json',
@@ -31,9 +32,9 @@ const getLegalPersonByIndex = async (req, res) => {
     }, {})
 
     await sendIndexMessage(chatId, index)
-    await stockRef.updateStock({
+    await inxRef.updateInx({
       id: date,
-      index: index,
+      legalPerson: index,
     })
 
     res.json(result.data)
