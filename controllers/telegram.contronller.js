@@ -21,11 +21,21 @@ const echo = async (req, res) => {
   }
 }
 
-const replyImage = async (req, res) => {
+const webhook = async (req, res) => {
   try {
     const text = req.body.message.text
     const chatId = req.body.message.chat.id
 
+    await replyImage(chatId, text)
+
+    res.json(true)
+  } catch (err) {
+    res.json(err.message)
+  }
+}
+
+const replyImage = async (chatId, text) => {
+  try {
     const { url, w, h } = puppeteerController.getConfig(text.toLowerCase())
     if (!url) throw new Error()
 
@@ -79,6 +89,5 @@ const getFileLink = (bucketName, filePath, token) =>
 
 module.exports = {
   echo,
-  replyImage,
-  replyMessage,
+  webhook,
 }
