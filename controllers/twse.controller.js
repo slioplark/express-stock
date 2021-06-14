@@ -43,10 +43,10 @@ const getLegalPersonByIndex = async (req, res) => {
 }
 
 const sendIndexMessage = async (chatId, index) => {
-  const ibs = parseInt(index['投信'].total)
-  const fbs = parseInt(index['外資及陸資'].total)
-  const hbs = parseInt(index['自營商(避險)'].total)
-  const sbs = parseInt(index['自營商(自行買賣)'].total)
+  const ibs = index['投信'].total
+  const fbs = index['外資及陸資'].total
+  const hbs = index['自營商(避險)'].total
+  const sbs = index['自營商(自行買賣)'].total
   const text = `${setIndexText(fbs, '外資')}\n${setIndexText(ibs, '投信')}\n${setIndexText(
     sbs,
     '自營商'
