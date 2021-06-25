@@ -44,10 +44,16 @@ const getConfig = (text = '') => {
       return { url: `https://moneydj.emega.com.tw/z/zg/zgk.djhtm?A=DB&B=0&C=${num}` }
     case 'lp':
       return { url: `https://moneydj.emega.com.tw/z/zc/zcl/zcl.djhtm?a=${num}&b=2` }
-    case 'txo':
-      return { url: `https://histock.tw/stock/option.aspx?m=week`, w: 1100, h: 1400 }
     case 'usd':
       return { url: 'https://invest.cnyes.com/forex/detail/USDTWD/history' }
+    case 'ixic':
+      return { url: 'https://invest.cnyes.com/index/GI/IXIC', h: 1400 }
+    case 'sox':
+      return { url: 'https://invest.cnyes.com/index/GI/SOX', h: 1400 }
+    case 'dji':
+      return { url: 'https://invest.cnyes.com/index/GI/DJI', h: 1400 }
+    case 'inx':
+      return { url: 'https://invest.cnyes.com/index/GI/INX', h: 1400 }
     case 'ki':
       return { url: 'https://invest.cnyes.com/index/GI/KOSPI', h: 1400 }
     case 'o':
