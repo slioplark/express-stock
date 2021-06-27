@@ -14,6 +14,8 @@ const echo = (req, res) => {
 
 const getQuoteByIndex = async (req, res) => {
   try {
+    if (dayjs().day() % 6 === 0) throw new Error()
+
     const { data: result } = await axios.get(`${domain}/realtime/v0.2/intraday/quote`, {
       params: {
         symbolId: 'TWSE_SEM_INDEX_1',
