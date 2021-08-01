@@ -1,20 +1,19 @@
 const dayjs = require('dayjs')
 const puppeteer = require('puppeteer')
 
-const getScreenshot = async (url = 'https://example.com', w = 800, h = 1024) => {
+const getScreenshot = async (url = 'https://example.com') => {
   const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
 
   const page = await browser.newPage()
   await page.goto(url, { waitUntil: 'networkidle0' })
+  await page.setViewport({
+    width: 768,
+    height: 1024,
+    deviceScaleFactor: 2,
+  })
   const buffer = await page.screenshot({
+    fullPage: true,
     encoding: 'binary',
-    omitBackground: true,
-    clip: {
-      x: 0,
-      y: 0,
-      width: w,
-      height: h,
-    },
   })
 
   await browser.close()
@@ -47,15 +46,15 @@ const getConfig = (text = '') => {
     case 'usd':
       return { url: 'https://invest.cnyes.com/forex/detail/USDTWD/history' }
     case 'ixic':
-      return { url: 'https://invest.cnyes.com/index/GI/IXIC', h: 1400 }
+      return { url: 'https://invest.cnyes.com/index/GI/IXIC' }
     case 'sox':
-      return { url: 'https://invest.cnyes.com/index/GI/SOX', h: 1400 }
+      return { url: 'https://invest.cnyes.com/index/GI/SOX' }
     case 'dji':
-      return { url: 'https://invest.cnyes.com/index/GI/DJI', h: 1400 }
+      return { url: 'https://invest.cnyes.com/index/GI/DJI' }
     case 'inx':
-      return { url: 'https://invest.cnyes.com/index/GI/INX', h: 1400 }
+      return { url: 'https://invest.cnyes.com/index/GI/INX' }
     case 'ki':
-      return { url: 'https://invest.cnyes.com/index/GI/KOSPI', h: 1400 }
+      return { url: 'https://invest.cnyes.com/index/GI/KOSPI' }
     case 'o':
       return { url: `https://invest.cnyes.com/twstock/TWS/${num}` }
     case 'h':

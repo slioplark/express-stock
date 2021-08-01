@@ -65,10 +65,8 @@ const replyImage = async (chatId, text) => {
 
     const buffer = await puppeteerController.getScreenshot(url, w, h)
     bucketStream.end(buffer)
-
-    res.json(true)
   } catch (err) {
-    res.json(err.message)
+    throw new Error(err.message)
   }
 }
 
