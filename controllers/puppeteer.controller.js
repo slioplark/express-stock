@@ -6,11 +6,18 @@ const getScreenshot = async (url = 'https://example.com') => {
 
   const page = await browser.newPage()
   await page.goto(url, { waitUntil: 'networkidle0' })
-  await page.setViewport({
-    width: 768,
-    height: 1024,
-    deviceScaleFactor: 2,
+  const { pageWidth, pageHeight } = await page.evaluate(() => {
+    return {
+      pageWidth: window.innerWidth,
+      pageHeight: document.documentElement.scrollHeight,
+    }
   })
+  await page.setViewport({
+    width: pageWidth,
+    height: pageHeight,
+    deviceScaleFactor: pageWidth * 2 < pageHeight ? 1 : 2,
+  })
+
   const buffer = await page.screenshot({
     fullPage: true,
     encoding: 'binary',
