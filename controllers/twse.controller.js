@@ -1,7 +1,7 @@
 const axios = require('axios')
 const dayjs = require('dayjs')
 const { inxRef } = require('../services/db/collections')
-const telegramController = require('./telegram.contronller')
+const stockController = require('./stock.contronller')
 
 const date = dayjs().format('YYYYMMDD')
 const domain = 'https://www.twse.com.tw'
@@ -53,7 +53,7 @@ const sendIndexMessage = async (chatId, index) => {
     '自營商'
   )}\n${setIndexText(hbs, '自營商(避險)')}`
 
-  await telegramController.replyMessage(chatId, text)
+  await stockController.replyMessage(chatId, text)
 }
 
 const setIndexText = (num, name) => {
