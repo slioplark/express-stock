@@ -5,6 +5,9 @@ const getScreenshot = async (url = 'https://example.com') => {
   const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
 
   const page = await browser.newPage()
+  await page.setUserAgent(
+    'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
+  )
   await page.goto(url, { waitUntil: 'networkidle0' })
   const { pageWidth, pageHeight } = await page.evaluate(() => {
     return {
@@ -36,6 +39,12 @@ const getConfig = (text = '') => {
   const num = list[1]
   const day = dayjs().add(-7, 'day').format('YYYY-MM-DD')
   switch (key) {
+    case 'chainnews':
+      return { url: 'https://www.chainnews.com/zh-hant/tag_1427.htm' }
+    case 'kuangnews':
+      return { url: 'https://kuangnews.net/article/category/new' }
+    case 'raydium':
+      return { url: 'https://raydium.io/acceleraytor/' }
     case 'fmc':
       return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000060&B=${day}&C=2` }
     case 'exd':
