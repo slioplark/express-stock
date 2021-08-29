@@ -1,13 +1,11 @@
 const dayjs = require('dayjs')
 const puppeteer = require('puppeteer')
 
-const getScreenshot = async (url = 'https://example.com') => {
+const getScreenshot = async (url = 'https://example.com', w, h) => {
   const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
 
   const page = await browser.newPage()
-  await page.setUserAgent(
-    'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)'
-  )
+  await page.setUserAgent('Mozilla/5.0')
   await page.goto(url, { waitUntil: 'networkidle0' })
   const { pageWidth, pageHeight } = await page.evaluate(() => {
     return {
@@ -16,8 +14,8 @@ const getScreenshot = async (url = 'https://example.com') => {
     }
   })
   await page.setViewport({
-    width: pageWidth,
-    height: pageHeight,
+    width: w || pageWidth,
+    height: h || pageHeight,
     deviceScaleFactor: pageWidth * 2 < pageHeight ? 1 : 2,
   })
 
@@ -40,11 +38,11 @@ const getConfig = (text = '') => {
   const day = dayjs().add(-7, 'day').format('YYYY-MM-DD')
   switch (key) {
     case 'chainnews':
-      return { url: 'https://www.chainnews.com/zh-hant/tag_1427.htm' }
+      return { url: 'https://www.chainnews.com/zh-hant/tag_1427.htm', w: 1440 }
     case 'kuangnews':
       return { url: 'https://kuangnews.net/article/category/new' }
     case 'raydium':
-      return { url: 'https://raydium.io/acceleraytor/' }
+      return { url: 'https://raydium.io/acceleraytor/', w: 1440 }
     case 'fmc':
       return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000060&B=${day}&C=2` }
     case 'exd':
