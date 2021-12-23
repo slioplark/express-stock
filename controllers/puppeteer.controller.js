@@ -37,10 +37,6 @@ const getConfig = (text = '') => {
   const num = list[1]
   const day = dayjs().add(-7, 'day').format('YYYY-MM-DD')
   switch (key) {
-    case 'chainnews':
-      return { url: 'https://www.chainnews.com/zh-hant/tag_1427.htm', w: 1440 }
-    case 'kuangnews':
-      return { url: 'https://kuangnews.net/article/category/new' }
     case 'raydium':
       return { url: 'https://raydium.io/acceleraytor/', w: 1440 }
     case 'fmc':
