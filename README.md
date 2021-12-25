@@ -14,7 +14,7 @@
   "url": "https://example.com/api/webhook"
 }
 
-//  response data
+// response data
 {
   "ok": true,
   "result": true,
