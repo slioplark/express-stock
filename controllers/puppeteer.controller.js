@@ -37,12 +37,6 @@ const getConfig = (text = '') => {
   const num = list[1]
   const day = dayjs().add(-7, 'day').format('YYYY-MM-DD')
   switch (key) {
-    case 'btc':
-      return { url: 'https://www.pionex.com/zh-TW/trade/BTC_USDT/pionex.v2', w: 1280 }
-    case 'pionex':
-      return { url: 'https://www.pionex.com/zh-TW/market/ranks', w: 1280, h: 1080 }
-    case 'raydium':
-      return { url: 'https://raydium.io/acceleraytor/', w: 1280 }
     case 'fmc':
       return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000060&B=${day}&C=2` }
     case 'exd':
