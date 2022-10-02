@@ -29,6 +29,8 @@ const getConfig = (text = '') => {
   const num = list[1]
   const day = dayjs().add(-7, 'day').format('YYYY-MM-DD')
   switch (key) {
+    case 'fmr':
+      return { url: 'https://www.macromicro.me/charts/53117/taiwan-taiex-maintenance-margin' }
     case 'fmc':
       return { url: `https://moneydj.emega.com.tw/z/ze/zej/zej.djhtm?A=EV000060&B=${day}&C=2` }
     case 'exd':
