@@ -4,7 +4,7 @@ const line = require('@line/bot-sdk')
 const axios = require('axios')
 const admin = require('../services/db')
 const { lineRef } = require('../services/db/collections')
-const puppeteerController = require('./puppeteer.controller')
+const playwrightController = require('./playwright.controller')
 
 const { STORAGE_BUCKET, LINE_CHANNEL_SECRET, LINE_CHANNEL_ACCESS_TOKEN } = process.env
 
@@ -44,7 +44,7 @@ const echo = (req, res) => {
 const pushMessage = async (req, res) => {
   try {
     const { message } = req.body
-    const { url, w, h } = puppeteerController.getConfig(message)
+    const { url } = playwrightController.getConfig(message)
     if (!url) throw new Error()
 
     const userIds = await lineRef.getUserIds()
@@ -88,7 +88,7 @@ const pushMessage = async (req, res) => {
       )
     })
 
-    const buffer = await puppeteerController.getScreenshot(url, w, h)
+    const buffer = await playwrightController.getScreenshot(url)
     bucketStream.end(buffer)
 
     res.json(null)
@@ -114,7 +114,7 @@ const replyMessage = async (req, res, next) => {
         return Promise.resolve(null)
       }
 
-      const { url, w, h } = puppeteerController.getConfig(event.message.text.toLowerCase())
+      const { url } = playwrightController.getConfig(event.message.text.toLowerCase())
       if (!url) return Promise.resolve(null)
 
       const uuid = uuidv4()
@@ -141,7 +141,7 @@ const replyMessage = async (req, res, next) => {
         })
       })
 
-      const buffer = await puppeteerController.getScreenshot(url, w, h)
+      const buffer = await playwrightController.getScreenshot(url)
       bucketStream.end(buffer)
     })
   )

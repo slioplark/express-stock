@@ -2,7 +2,7 @@ require('dotenv').config()
 const { v4: uuidv4 } = require('uuid')
 const axios = require('axios')
 const admin = require('../services/db')
-const puppeteerController = require('./puppeteer.controller.js')
+const playwrightController = require('./playwright.controller.js')
 
 const { TELEGRAM_CHAIN_TOKEN, STORAGE_BUCKET } = process.env
 
@@ -37,7 +37,7 @@ const webhook = async (req, res) => {
 
 const replyImage = async (chatId, text) => {
   try {
-    const { url, w, h } = puppeteerController.getConfig(text.toLowerCase())
+    const { url, w, h } = playwrightController.getConfig(text.toLowerCase())
     if (!url) throw new Error()
 
     const uuid = uuidv4()
@@ -63,7 +63,7 @@ const replyImage = async (chatId, text) => {
       })
     })
 
-    const buffer = await puppeteerController.getScreenshot(url, w, h)
+    const buffer = await playwrightController.getScreenshot(url, w, h)
     bucketStream.end(buffer)
   } catch (err) {
     throw new Error(err.message)
