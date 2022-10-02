@@ -1,31 +1,23 @@
 const dayjs = require('dayjs')
-const puppeteer = require('puppeteer')
+const { chromium, devices } = require('playwright')
 
-const getScreenshot = async (url = 'https://example.com', w, h) => {
-  const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
+const device = {
+  sm: devices['iPhone 12 Pro'],
+  md: devices['iPad Pro 11'],
+  lg: devices['Desktop Edge'],
+}
 
-  const page = await browser.newPage()
-  await page.setUserAgent('Mozilla/5.0')
-  await page.goto(url, { waitUntil: 'networkidle0' })
-  const { pageWidth, pageHeight } = await page.evaluate(() => {
-    return {
-      pageWidth: window.innerWidth,
-      pageHeight: document.documentElement.scrollHeight,
-    }
-  })
-  await page.setViewport({
-    width: w || pageWidth,
-    height: h || pageHeight,
-    deviceScaleFactor: pageWidth * 2 < pageHeight ? 1 : 2,
+const getScreenshot = async (url = 'https://example.com', size = 'lg') => {
+  const browser = await chromium.launch()
+  const context = await browser.newContext({
+    ...device[size],
   })
 
-  const buffer = await page.screenshot({
-    fullPage: true,
-    encoding: 'binary',
-  })
+  const page = await context.newPage()
+  await page.goto(url, { waitUntil: 'networkidle' })
 
+  const buffer = await page.screenshot({ fullPage: true })
   await browser.close()
-
   return buffer
 }
 
@@ -52,27 +44,27 @@ const getConfig = (text = '') => {
     case 'lp':
       return { url: `https://moneydj.emega.com.tw/z/zc/zcl/zcl.djhtm?a=${num}&b=2` }
     case 'usd':
-      return { url: 'https://invest.cnyes.com/forex/detail/USDTWD/history' }
+      return { size: 'md', url: 'https://invest.cnyes.com/forex/detail/USDTWD/history' }
     case 'ixic':
-      return { url: 'https://invest.cnyes.com/index/GI/IXIC' }
+      return { size: 'md', url: 'https://invest.cnyes.com/index/GI/IXIC' }
     case 'sox':
-      return { url: 'https://invest.cnyes.com/index/GI/SOX' }
+      return { size: 'md', url: 'https://invest.cnyes.com/index/GI/SOX' }
     case 'dji':
-      return { url: 'https://invest.cnyes.com/index/GI/DJI' }
+      return { size: 'md', url: 'https://invest.cnyes.com/index/GI/DJI' }
     case 'inx':
-      return { url: 'https://invest.cnyes.com/index/GI/INX' }
+      return { size: 'md', url: 'https://invest.cnyes.com/index/GI/INX' }
     case 'ki':
-      return { url: 'https://invest.cnyes.com/index/GI/KOSPI' }
+      return { size: 'md', url: 'https://invest.cnyes.com/index/GI/KOSPI' }
     case 'o':
-      return { url: `https://invest.cnyes.com/twstock/TWS/${num}` }
+      return { size: 'md', url: `https://invest.cnyes.com/twstock/TWS/${num}` }
     case 'h':
-      return { url: `https://invest.cnyes.com/twstock/TWS/${num}/history` }
+      return { size: 'md', url: `https://invest.cnyes.com/twstock/TWS/${num}/history` }
     case 'f':
-      return { url: `https://invest.cnyes.com/twstock/TWS/${num}/finirating` }
+      return { size: 'md', url: `https://invest.cnyes.com/twstock/TWS/${num}/finirating` }
     case 'd':
-      return { url: `https://invest.cnyes.com/twstock/TWS/${num}/dividend` }
+      return { size: 'md', url: `https://invest.cnyes.com/twstock/TWS/${num}/dividend` }
     case 'p':
-      return { url: `https://invest.cnyes.com/twstock/TWS/${num}/profile` }
+      return { size: 'md', url: `https://invest.cnyes.com/twstock/TWS/${num}/profile` }
     default:
       return { url: null }
   }
