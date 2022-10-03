@@ -8,7 +8,7 @@ const device = {
 }
 
 const echo = async (req, res) => {
-  const browser = await chromium.launch({ args: ['--no-sandbox'] })
+  const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] })
   const context = await browser.newContext()
 
   const page = await context.newPage()
@@ -22,7 +22,7 @@ const echo = async (req, res) => {
 }
 
 const getScreenshot = async (url = 'https://example.com', size = 'lg') => {
-  const browser = await chromium.launch({ args: ['--no-sandbox'] })
+  const browser = await chromium.launch({ headless: true, args: ['--no-sandbox'] })
   const context = await browser.newContext({
     ...device[size],
   })
