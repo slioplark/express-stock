@@ -37,7 +37,7 @@ const webhook = async (req, res) => {
 
 const replyImage = async (chatId, text) => {
   try {
-    const { url, w, h } = playwrightController.getConfig(text.toLowerCase())
+    const { url } = playwrightController.getConfig(text.toLowerCase())
     if (!url) throw new Error()
 
     const uuid = uuidv4()
