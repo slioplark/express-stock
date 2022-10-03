@@ -7,6 +7,20 @@ const device = {
   lg: devices['Desktop Edge'],
 }
 
+const echo = async (req, res) => {
+  const browser = await chromium.launch({ args: ['--no-sandbox'] })
+  const context = await browser.newContext()
+
+  const page = await context.newPage()
+  await page.goto('https://example.com', { waitUntil: 'networkidle' })
+
+  const image = await page.screenshot({ fullPage: true })
+  res.setHeader('Content-Type', 'image/png')
+  res.send(image)
+
+  await context.close()
+}
+
 const getScreenshot = async (url = 'https://example.com', size = 'lg') => {
   const browser = await chromium.launch({ args: ['--no-sandbox'] })
   const context = await browser.newContext({
@@ -17,7 +31,7 @@ const getScreenshot = async (url = 'https://example.com', size = 'lg') => {
   await page.goto(url, { waitUntil: 'networkidle' })
 
   const buffer = await page.screenshot({ fullPage: true })
-  await browser.close()
+  await context.close()
   return buffer
 }
 
@@ -73,6 +87,7 @@ const getConfig = (text = '') => {
 }
 
 module.exports = {
+  echo,
   getConfig,
   getScreenshot,
 }
