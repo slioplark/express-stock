@@ -63,7 +63,7 @@ const replyImage = async (chatId, text) => {
       })
     })
 
-    const buffer = await playwrightController.getScreenshot(url, w, h)
+    const buffer = await playwrightController.getScreenshot(url)
     bucketStream.end(buffer)
   } catch (err) {
     throw new Error(err.message)
