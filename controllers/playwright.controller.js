@@ -8,7 +8,7 @@ const device = {
 }
 
 const getScreenshot = async (url = 'https://example.com', size = 'lg') => {
-  const browser = await chromium.launch()
+  const browser = await chromium.launch({ args: ['--no-sandbox'] })
   const context = await browser.newContext({
     ...device[size],
   })
